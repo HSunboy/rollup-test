@@ -2,10 +2,11 @@
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
+import replace from 'rollup-plugin-replace';
 
 export default {
-    entry: 'src/main.js',
-    format: 'cjs',
+    entry: 'src/react-main.js',
+    format: 'iife',
     //cjs commonjs module.exports
     //amd define
     //es export default
@@ -16,6 +17,7 @@ export default {
         babel({
             exclude: 'node_modules/**' // 仅仅转译我们的源码
         }),
+        
         commonjs({
             // non-CommonJS modules will be ignored, but you can also
             // specifically include/exclude files
@@ -43,6 +45,9 @@ export default {
             // or a `id => boolean` function. Only use this
             // option if you know what you're doing!
             ignore: ['conditional-runtime-dependency']
+        }),
+        replace({
+            "process.env.NODE_ENV":JSON.stringify(process.env.NODE_ENV || 'development')
         })
     ],
     dest: 'dist/bundle.js',
